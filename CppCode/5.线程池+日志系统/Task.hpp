@@ -13,7 +13,7 @@ enum
     unknow
 };
 
-const std::string operators = "+-*/%___"; // 加减乘除和模拟其他未知操作
+const std::string operators = "+-*/%"; // 加减乘除和模拟其他未知操作
 
 class Task
 {
@@ -60,15 +60,14 @@ public:
     void operator()()
     {
         Run();
-        sleep(2);
     }
 
-    std::string PrintTask()
+    std::string PrintTask() const
     {
         return std::to_string(data_x) + Operator + std::to_string(data_y) + "=?";
     }
 
-    std::string PrintResult()
+    std::string PrintResult() const
     {
         return std::to_string(data_x) + Operator + std::to_string(data_y) + "=" + std::to_string(result) + "[" + std::to_string(code) + "]";
     }
