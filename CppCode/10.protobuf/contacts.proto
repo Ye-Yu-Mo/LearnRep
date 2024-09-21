@@ -1,0 +1,12 @@
+syntax = "proto3"; // 指定使用proto3版本语法
+
+package contacts; // 可选的声明符，表示文件的命名空间
+
+// 结构化对象
+message contact{
+    // 字段描述 ： 字段类型 字段名 = 字段唯一编号;
+    uint64 ID = 1;
+    string Name = 2;
+    string TelNumber = 3;
+    string Adders = 4;
+}
