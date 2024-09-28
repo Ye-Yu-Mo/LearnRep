@@ -73,7 +73,10 @@
     "cinttypes": "cpp",
     "typeindex": "cpp",
     "typeinfo": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "coroutine": "cpp",
+    "source_location": "cpp",
+    "future": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "g++",
   "C_Cpp_Runner.cppCompilerPath": "g++",
