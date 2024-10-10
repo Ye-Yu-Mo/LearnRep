@@ -39,8 +39,7 @@ public:
         {
             bool ok = true;
             // 读取报文
-            if (!td->_sockp->Recv(&inbufferstream, 1024))
-                ;
+            if (!td->_sockp->Recv(&inbufferstream, 1024))  
             break;
             // 处理报文
             std::string send_string = td->_this->_handler_request(inbufferstream, &ok);
@@ -57,7 +56,7 @@ public:
                 break;
             }
         }
-        td->_sockp->CloseSocket();
+        td->_sockp->CloseSockFd();
         delete td->_sockp;
         delete td;
         return nullptr;
