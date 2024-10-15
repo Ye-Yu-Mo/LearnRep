@@ -76,7 +76,15 @@
     "variant": "cpp",
     "coroutine": "cpp",
     "source_location": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    "*.ipp": "cpp",
+    "span": "cpp",
+    "regex": "cpp",
+    "charconv": "cpp",
+    "forward_list": "cpp",
+    "format": "cpp",
+    "shared_mutex": "cpp",
+    "stdfloat": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "g++",
   "C_Cpp_Runner.cppCompilerPath": "g++",

@@ -71,7 +71,6 @@ int main(int argc, char *argv[])
         // 父进程退出
         return 0;
     }
-    Daemon(false, false);
     std::unique_ptr<TcpServer> svr(new TcpServer(localport, HandlerRequest));
     svr->Loop();
     return 0;
