@@ -1,53 +1,89 @@
+#include <coroutine>
 #include <iostream>
-#include <regex>
-#include <string>
+#include <optional>
 
-std::string convertToRegex(const std::string& format) {
-    std::string regex = format;
+// 协程生成器，按需生成数列的协程对象
+class Generator
+{
+public:
+    struct promise_type;                                     // 协程生成器的核心，是协程的承诺类型，用于定义协程的行为
+    using handle_type = std::coroutine_handle<promise_type>; // 管理协程的生命周期
 
-    // 替换格式符号为对应的正则表达式
-    regex = std::regex_replace(regex, std::regex("%d\\{?\\w?:?\\w?\\}?"), R"((\d{2}-\d{2}-\d{2}))"); // 日期
-    regex = std::regex_replace(regex, std::regex("%T"), R"((\d{2}:\d{2}:\d{2}))"); // 时间
-    regex = std::regex_replace(regex, std::regex("%t"), R"((\d+))"); // 线程ID
-    regex = std::regex_replace(regex, std::regex("%p"), R"((\w+))"); // 日志级别
-    regex = std::regex_replace(regex, std::regex("%c"), R"([\w]+)"); // 日志器名称
-    regex = std::regex_replace(regex, std::regex("%f"), R"([\w\.]+)"); // 文件名
-    regex = std::regex_replace(regex, std::regex("%l"), R"((\d+))"); // 行号
-    regex = std::regex_replace(regex, std::regex("%m"), R"((.*))"); // 日志消息
-
-    // 处理方括号
-    regex = std::regex_replace(regex, std::regex(R"(\[)"), R"(\[)"); // 处理开方括号
-    regex = std::regex_replace(regex, std::regex(R"(\])"), R"(\])"); // 处理闭方括号
-
-    return regex;
-}
-
-int main() {
-    std::string format = "[%d{%y-%m-%d|%H:%M:%S}][%t][%c][%f:%l][%p]%T%m%n";
-    std::string regex_str = convertToRegex(format);
-
-    // 定义日志信息
-    std::string log = "[24-10-14|14:49:02][140516360988480][root][test.cc:17][FATAL]   测试结束";
-    
-    // 使用正则表达式进行匹配
-    std::regex log_regex(regex_str);
-    std::smatch match;
-
-    // 使用 std::regex_match 检查整个日志字符串的匹配
-    if (std::regex_match(log, match, log_regex)) {
-        std::cout << "匹配成功!" << std::endl;
-        // 提取匹配内容
-        std::cout << "日期: " << match[1] << std::endl;          // 日期
-        std::cout << "时间: " << match[2] << std::endl;          // 时间
-        std::cout << "线程ID: " << match[3] << std::endl;       // 线程ID
-        std::cout << "日志器名称: " << match[4] << std::endl;  // 日志器名称
-        std::cout << "文件名: " << match[5] << std::endl;      // 文件名
-        std::cout << "行号: " << match[6] << std::endl;        // 行号
-        std::cout << "日志级别: " << match[7] << std::endl;    // 日志级别
-        std::cout << "日志消息: " << match[8] << std::endl;     // 日志消息
-    } else {
-        std::cout << "匹配失败!" << std::endl;
+    explicit Generator(handle_type h) : coro(h)
+    {
+    }
+    ~Generator()
+    {
+        if (coro)
+            coro.destroy();
+    }
+    // 函数恢复协程执行并返回协程是否完成
+    bool next()
+    {
+        coro.resume();
+        return not coro.done();
     }
 
+    int value() const { return *coro.promise().current_value; }
+
+public:
+    struct promise_type // 协程生成器核心
+    {
+        std::optional<int> current_value; // 用于存储当前协程生成的值
+
+        /// @brief 获取一个协程对象
+        /// @return
+        Generator get_return_object()
+        {
+            return Generator{handle_type::from_promise(*this)};
+        }
+        /// @brief 表示协程的初始挂起点，协程启动时是否挂起
+        /// @return 需要挂起
+        std::suspend_always initial_suspend()
+        {
+            return {};
+        }
+        /// @brief 协程结束时会挂起，等待释放资源
+        /// @return 
+        std::suspend_always final_suspend() noexcept
+        {
+            return {};
+        }
+        /// @brief 异常处理 终止程序
+        void unhandled_exception() { std::exit(1); }
+        /// @brief yield_value是协程的生成行为，调用co_yield时会调用这个函数，存到current_value中并返回
+        /// @param value 
+        /// @return 
+        std::suspend_always yield_value(int value)
+        {
+            current_value = value;
+            return {};
+        }
+
+        void return_void() {}
+    };
+
+private:
+    handle_type coro;
+};
+
+Generator numberSequence(int start = 0, int step = 1)
+{
+    int value = start;
+    while (true)
+    {
+        co_yield value;
+        value += step;
+    }
+}
+
+int main()
+{
+    auto seq = numberSequence(10, 5);
+    for (int i = 0; i < 5; ++i)
+    {
+        seq.next();
+        std::cout << seq.value() << " ";
+    }
     return 0;
 }

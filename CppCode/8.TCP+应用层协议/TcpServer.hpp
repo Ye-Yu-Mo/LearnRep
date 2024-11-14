@@ -12,14 +12,14 @@ class TcpServer;
 class ThreadData
 {
 public:
-    ThreadData(TcpServer *tcp_this, NetWork::Socket *sockp)
+    ThreadData(TcpServer *tcp_this, NetWork::TcpSocket *sockp)
         : _this(tcp_this), _sockp(sockp)
     {
     }
 
 public:
     TcpServer *_this;
-    NetWork::Socket *_sockp;
+    NetWork::TcpSocket *_sockp;
 };
 
 class TcpServer
@@ -67,7 +67,7 @@ public:
         {
             std::string peerip;
             uint16_t peerport;
-            NetWork::Socket *newsock = _listensocket->AcceptConnection(&peerip, &peerport);
+            NetWork::TcpSocket *newsock = _listensocket->AcceptConnection(&peerip, &peerport);
             if (newsock == nullptr)
                 continue;
             std::cout << "get a new connection,sockfd:" << newsock->GetSockFd() << "client info:" << peerip << ":" << peerport << std::endl;
@@ -83,7 +83,7 @@ public:
 
 private:
     int _port;
-    NetWork::Socket *_listensocket;
+    NetWork::TcpSocket *_listensocket;
 
 public:
     func_t _handler_request;

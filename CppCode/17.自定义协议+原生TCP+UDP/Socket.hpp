@@ -21,7 +21,6 @@ namespace NetWork
         virtual ~Socket() {}
         virtual void CreateSocketOrDie() = 0;
         virtual void BindSocketOrDie(uint16_t port) = 0;
-    public:
     };
 
     class UdpSocket : public Socket
@@ -106,10 +105,11 @@ namespace NetWork
             if (_sockfd > DEFAULT_SOCKFD)
                 ::close(_sockfd);
         }
-        bool Recv(std::string *buffer, int size)
+        bool Recv(std::string *buffer, int size = 1024 * 10)
         {
             char inbuffer[size];
             ssize_t n = recv(_sockfd, inbuffer, size - 1, 0);
+            std::cout << "recv 创建成功" << std::endl;
             if (n > 0)
             {
                 inbuffer[n] = 0;
@@ -136,12 +136,14 @@ namespace NetWork
             TcpSocket *s = new TcpSocket(newsockfd);
             return s;
         }
+
     private:
         void CreateSocketOrDie() override
         {
             _sockfd = ::socket(AF_INET, SOCK_STREAM, 0);
             if (_sockfd < 0)
                 throw std::runtime_error("Socket 创建失败！" + std::string(strerror(errno)));
+            std::cout << "socket 创建成功" << std::endl;
         }
         void BindSocketOrDie(uint16_t port) override
         {
@@ -154,14 +156,18 @@ namespace NetWork
             int n = ::bind(_sockfd, Convert(&local), sizeof(local));
             if (n < 0)
                 throw std::runtime_error("Bind 失败" + std::string(strerror(errno)));
+            std::cout << "bind 创建成功" << std::endl;
+
         }
         void ListenSocketOrDie(int backlog = DEFAULT_BACKLOG)
         {
             int n = ::listen(_sockfd, backlog);
             if (n < 0)
                 throw std::runtime_error("listen 失败" + std::string(strerror(errno)));
+            std::cout << "listen 创建成功" << std::endl;
+            
         }
-        
+
         bool ConnectServer(std::string &serverip, uint16_t serverport)
         {
             struct sockaddr_in server;
