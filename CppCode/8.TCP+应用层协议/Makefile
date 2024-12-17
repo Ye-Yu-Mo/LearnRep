@@ -4,9 +4,9 @@ all:tcpclient tcpserver
 LDFLAG=#-DSelfDefine=1
 
 tcpclient:TcpClientMain.cc
-	g++ $^ -g -o $@ $(LDFLAG)  -std=c++14  -ljsoncpp
+	x86_64-w64-mingw32-g++ $^ -g -o $@ $(LDFLAG)  -std=c++14  -ljsoncpp -static
 tcpserver:TcpServerMain.cc
-	g++ $^ -g -o $@ $(LDFLAG)  -std=c++14 -lpthread -ljsoncpp
+	x86_64-w64-mingw32-g++ $^ -g -o $@ $(LDFLAG)  -std=c++14 -lpthread -ljsoncpp -static
 
 .PHONY:clean
 clean:

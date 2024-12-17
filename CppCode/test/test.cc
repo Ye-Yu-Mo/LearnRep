@@ -41,7 +41,7 @@ int main()
 
     cout << "\n4. 循环扫描算法 (C-SCAN):\n";
     cscan(requests, head, disk_size);
-
+while(1);
     return 0;
 }
 

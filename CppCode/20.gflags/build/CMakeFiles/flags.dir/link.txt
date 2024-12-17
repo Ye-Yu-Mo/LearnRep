@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/flags.dir/main.cc.o -o flags 

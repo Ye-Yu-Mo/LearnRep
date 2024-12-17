@@ -1,6 +1,7 @@
 #include "BlockQueue.hpp"
 #include "Task.hpp"
 #include <ctime>
+#include <cstdint>
 
 class ThreadData
 {
