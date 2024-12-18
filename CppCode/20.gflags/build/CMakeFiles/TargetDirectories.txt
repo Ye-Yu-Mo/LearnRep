@@ -1,3 +1,0 @@
-/home/leaf/LearnRep/CppCode/20.gflags/build/CMakeFiles/flags.dir
-/home/leaf/LearnRep/CppCode/20.gflags/build/CMakeFiles/edit_cache.dir
-/home/leaf/LearnRep/CppCode/20.gflags/build/CMakeFiles/rebuild_cache.dir
