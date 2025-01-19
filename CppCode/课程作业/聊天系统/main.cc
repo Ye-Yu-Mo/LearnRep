@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
         Usage(argv[0]);
         return 1;
     }
-    threadpool::ptr pool = std::make_unique<threadpool>(); // 线程池管理
+    threadpool::ptr pool = std::make_unique<threadpool>(2); // 线程池管理
     pool->push(client, argv[1]);
     pool->push(server);
     return 0;

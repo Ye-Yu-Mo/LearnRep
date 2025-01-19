@@ -84,7 +84,8 @@
     "forward_list": "cpp",
     "format": "cpp",
     "shared_mutex": "cpp",
-    "stdfloat": "cpp"
+    "stdfloat": "cpp",
+    "__verbose_abort": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "g++",
   "C_Cpp_Runner.cppCompilerPath": "g++",

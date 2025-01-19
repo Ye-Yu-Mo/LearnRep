@@ -11,6 +11,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+const static uint16_t PORT = 12345;      ///< 默认端口号
 
 /**
  * @class InetAddr

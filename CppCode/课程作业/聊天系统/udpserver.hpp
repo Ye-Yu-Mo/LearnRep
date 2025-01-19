@@ -11,7 +11,6 @@
 #include "InetAddr.hpp"
 #include "logs/Xulog.h"
 
-const static uint16_t PORT = 12345;      ///< 默认端口号
 const static uint16_t DEFAULTFD = -1;    ///< 默认socket
 const static uint16_t BUFFERSIZE = 1024; ///< 默认缓冲区大小
 /**
