@@ -1,8 +1,8 @@
-use std::io::stdin;
-fn main() {
-    // println!("Hello, world!");
-    let mut msg = String::new();
-    println!("please enter message:");
-    stdin().read_line(&mut msg).unwrap();
-    println!("Message is {}", msg);
+fn main(){
+    let a = 12;
+    let b = 24;
+    println!("a is {}", a);
+    println!("a is {a}");
+    println!("b is {1}, a is {0}", a, b);
+    println!("{{");
 }
